@@ -1,0 +1,4 @@
+.social-links { display: flex; flex-wrap: wrap; gap: .6rem; }
+.social-links > * { display: inline-grid; place-items: center; width: 2.65em; aspect-ratio: 1; border-radius: .76em; background: #ffffff1c; box-shadow: 0 3px 6px #190a2233; }
+.social-links svg { width: 54%; height: auto; }
+.social-links a:hover { background: #ffffff35; }

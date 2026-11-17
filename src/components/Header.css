@@ -1,0 +1,28 @@
+.site-header { position: sticky; top: 14px; z-index: 5; margin-block: 15px 0; min-height: 76px; padding: .55rem clamp(1rem, calc(2.6 * var(--layout-unit)), 3.2rem); border: 1px solid #ede5e9; border-radius: 80px; background: rgba(252,249,249,.96); box-shadow: 0 12px 28px #48263c13; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.site-header nav { display: flex; align-items: center; gap: clamp(.75rem, calc(2.6 * var(--layout-unit)), 4rem); font-weight: 800; font-size: clamp(.88rem, calc(1.17 * var(--layout-unit)), 1.32rem); }
+.nav-item { display: flex; align-items: center; position: relative; gap: 3px; }
+.nav-item.current::after { content: ''; position: absolute; bottom: -.55rem; inset-inline: -.35rem; height: 3px; border-radius: 6px; background: var(--orange); }
+.nav-quote { margin-left: clamp(.2rem, calc(2 * var(--layout-unit)), 3rem); color: #26112d; }
+.services-toggle, .menu-toggle { display: inline-grid; place-items: center; border: 0; background: transparent; color: inherit; padding: .25rem; }
+.menu-toggle { display: none; }
+.services-menu { position: absolute; background: #fcf9f9; border: 1px solid var(--line); border-radius: 14px; min-width: 195px; top: calc(100% + .9rem); left: -.7rem; box-shadow: 0 8px 18px #31182e20; padding: .35rem; }
+.services-menu a { display: block; padding: .55rem .65rem; border-radius: 9px; font-size: .94rem; }
+.services-menu a:hover { background: #f2e9ee; }
+@media (max-width: 930px) {
+  .site-header { min-height: 60px; }
+  .menu-toggle { display: inline-grid; }
+  .site-header nav { display: none; position: absolute; top: calc(100% + .4rem); inset-inline: 0; padding: 1rem; border: 1px solid var(--line); border-radius: 20px; background: #fcf9f9; }
+  .site-header nav.open { display: grid; justify-items: start; }
+  .nav-item { flex-wrap: wrap; }
+  .nav-item.current::after { display: none; }
+  .nav-item.current > a { color: var(--accent); }
+  .services-menu { position: static; flex-basis: 100%; margin-top: .3rem; box-shadow: none; }
+  .nav-quote { margin: 0; }
+}
+.nav-quote { color: white; background: linear-gradient(115deg,#ec6220,#d95114); }
+@media (min-width: 931px) {
+  .site-header { top: 10px; min-height: 62px; margin-top: 10px; }
+  .site-header nav { gap: clamp(.7rem, 1.6vw, 1.8rem); }
+  .nav-quote { margin-left: 0; }
+  .site-header .brand { font-size: clamp(1.42rem, 2.2vw, 2.2rem); }
+}

@@ -1,0 +1,58 @@
+export const projects = [
+  {
+    slug: 'wedding-invitation',
+    image: 'wedding',
+    name: 'Wedding Invitation',
+    category: 'Digital Invitation',
+    service: 'Digital Invitations',
+    description: 'A floral save-the-date design for Aditi & Karthik, with the wedding details gathered in one invitation.',
+    alt: 'Aditi and Karthik’s pink floral wedding invitation displayed on a laptop',
+    features: [
+      ['Save the date', 'Aditi and Karthik’s names and wedding date sit front and center.'],
+      ['Our story and events', 'Dedicated sections introduce the couple and organize the wedding schedule.'],
+      ['Gallery and RSVP', 'Guests can find photos and an RSVP section from the invitation navigation.'],
+    ],
+  },
+  {
+    slug: 'developer-portfolio',
+    image: 'portfolio',
+    name: 'Developer Portfolio',
+    category: 'Portfolio',
+    service: 'Portfolios',
+    description: 'A dark portfolio concept that introduces Rohit as a frontend developer and puts his work and skills within easy reach.',
+    alt: 'Rohit’s developer portfolio on a laptop with a purple and orange ribbon graphic',
+    features: [
+      ['Developer introduction', 'A short introduction explains who Rohit is and the kind of frontend work he does.'],
+      ['Projects and skills', 'Dedicated navigation brings visitors to project examples and technical skills.'],
+      ['Contact', 'The Contact Me button offers a direct path for potential clients and collaborators.'],
+    ],
+  },
+  {
+    slug: 'cafe-website',
+    image: 'cafe',
+    name: 'Cafe Website',
+    category: 'Business Website',
+    service: 'Business Websites',
+    description: 'A warm website concept for The Brew Cafe, with coffee photography and a clear path to the menu.',
+    alt: 'The Brew Cafe website on a laptop with a cup of coffee and latte art',
+    features: [
+      ['Menu discovery', 'Explore Menu is the main action so visitors can quickly see what the cafe serves.'],
+      ['Cafe atmosphere', 'Warm photography and a gallery give visitors a feel for the space.'],
+      ['Visit information', 'A dedicated contact section gives visitors a place to look up practical details.'],
+    ],
+  },
+  {
+    slug: 'startup-landing',
+    image: 'startup',
+    name: 'Startup Landing',
+    category: 'Landing Page',
+    service: 'Landing Pages',
+    description: 'A landing page concept for Nexora, a business management platform. A dashboard preview makes the product easier to picture.',
+    alt: 'Nexora startup landing page with purple dashboard panels and orange accents',
+    features: [
+      ['Product overview', 'The headline explains what Nexora helps businesses do.'],
+      ['Dashboard preview', 'Charts and dashboard panels illustrate what the product interface could look like.'],
+      ['Clear next steps', 'Get Started and Watch Demo buttons give prospective customers two ways to explore the product.'],
+    ],
+  },
+];

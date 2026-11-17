@@ -1,0 +1,22 @@
+.footer { background: linear-gradient(120deg,#391b3c,#321634); color: #fff9fb; padding: 1.35rem 0 1.15rem; font-size: clamp(.9rem,calc(1 * var(--layout-unit)),1.15rem); }
+.footer .wrap { width: min(83%,1440px); }
+.footer-grid { display: grid; grid-template-columns: 1.22fr .9fr .98fr 1.26fr; gap: clamp(1rem,calc(3.35 * var(--layout-unit)),3.8rem); }
+.footer-grid > :not(:first-child) { border-left: 1px solid #ffffff5c; padding-left: clamp(1rem,calc(3.45 * var(--layout-unit)),3.8rem); }
+.footer-grid h2 { font-size: 1.27em; line-height: 1.2; margin-bottom: .44em; }
+.footer-grid .brand { font-size: clamp(1.65rem,calc(2.05 * var(--layout-unit)),2.3rem); }
+.footer-grid .social-links, .footer-grid .button { margin-top: 1rem; }
+.footer-grid nav a { display: block; width: fit-content; margin: .15em 0; }
+.footer-grid nav a:hover, .footer-bottom button:hover { color: #ffa44b; }
+.footer-bottom { border-top: 1px solid #ffffff62; display: flex; flex-wrap: wrap; gap: .55rem 1.25rem; justify-content: space-between; margin-top: 1.45rem; padding-top: .8rem; }
+.footer-bottom button { border: 0; background: transparent; color: inherit; padding: 0; }
+.footer-bottom button + button { border-left: 1px solid #fff8; margin-left: .8em; padding-left: .8em; }
+@media (max-width: 880px) {
+  .footer .wrap { width: 91%; }
+  .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 1rem; }
+  .footer-grid > :not(:first-child) { border: 0; padding-left: 0; }
+  .footer-grid > div { grid-column: 1 / -1; }
+}
+.footer .button { color: white; background: linear-gradient(115deg,#e65a18,#d95114); }
+@media (min-width: 931px) {
+  .footer .wrap { width: min(87%, 1120px); }
+}

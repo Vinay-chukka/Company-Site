@@ -1,0 +1,8 @@
+.detail-dialog { width: min(650px, 90vw); border: 1px solid var(--line); border-radius: 23px; padding: 0; color: var(--ink); background: var(--paper); box-shadow: 0 25px 65px #26112d45; }
+.detail-dialog::backdrop { background: #26112d95; }
+.dialog-content { position: relative; display: grid; gap: 1rem; padding: clamp(1.1rem, 4vw, 2rem); }
+.dialog-content h2 { padding-right: 1.6rem; line-height: 1.06; }
+.dialog-content p { color: var(--muted); }
+.dialog-content img { border-radius: 12px; }
+.dialog-content .button { justify-self: start; }
+.dialog-close { position: absolute; top: 12px; right: 12px; border: 0; color: inherit; border-radius: 50%; padding: .35rem; display: grid; background: #eadde7; }
