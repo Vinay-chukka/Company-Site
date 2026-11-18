@@ -12,7 +12,7 @@ export default function Services() {
     <section id="services" className="services">
       <Asterisk className="services-spark" aria-hidden="true" />
       <div className="wrap services-inner">
-        <p className="eyebrow">02 / Our Services</p>
+        <p className="eyebrow">Our Services</p>
         <h2 className="section-title">What We <em>Create.</em></h2>
         <p className="services-intro">Thoughtfully designed, responsive and modern websites<br className="desktop-break" /> for businesses, creators and special moments.</p>
         <div className="services-grid">

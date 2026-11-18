@@ -14,7 +14,7 @@ export default function Projects() {
 
   return (
     <section id="projects" className="projects wrap">
-      <p className="eyebrow">03 / Selected Projects</p>
+      <p className="eyebrow">Selected Projects</p>
       <h2 className="section-title">Work We’re <em>Proud Of.</em></h2>
       <div className="project-grid">
         {projects.map((project) => (
@@ -27,7 +27,7 @@ export default function Projects() {
           </a>
         ))}
       </div>
-      <button type="button" className="text-link all-projects" onClick={() => setShowIndex(true)}>View All Projects <ArrowUpRight /></button>
+      {/* <button type="button" className="text-link all-projects" onClick={() => setShowIndex(true)}>View All Projects <ArrowUpRight /></button> */}
       {showIndex && <DetailDialog title="All Projects" onClose={() => setShowIndex(false)}>
         <ul className="project-index">{projects.map((project) => <li key={project.slug}>
           <a className="text-link" href={projectHref(project.slug)}>{project.name} <ArrowUpRight aria-hidden="true" /></a>

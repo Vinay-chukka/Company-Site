@@ -1,8 +1,188 @@
-.detail-dialog { width: min(650px, 90vw); border: 1px solid var(--line); border-radius: 23px; padding: 0; color: var(--ink); background: var(--paper); box-shadow: 0 25px 65px #26112d45; }
-.detail-dialog::backdrop { background: #26112d95; }
-.dialog-content { position: relative; display: grid; gap: 1rem; padding: clamp(1.1rem, 4vw, 2rem); }
-.dialog-content h2 { padding-right: 1.6rem; line-height: 1.06; }
-.dialog-content p { color: var(--muted); }
-.dialog-content img { border-radius: 12px; }
-.dialog-content .button { justify-self: start; }
-.dialog-close { position: absolute; top: 12px; right: 12px; border: 0; color: inherit; border-radius: 50%; padding: .35rem; display: grid; background: #eadde7; }
+
+/* ==========================================
+   PAGEORIGIN - DETAIL DIALOG
+========================================== */
+
+.detail-dialog {
+  width: min(650px, 90vw);
+  max-width: 90vw;
+  max-height: min(85dvh, 850px);
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+
+  border: 1px solid var(--line);
+  border-radius: 23px;
+
+  color: var(--ink);
+  background: var(--paper);
+
+  box-shadow: 0 25px 65px #26112d45;
+}
+
+.detail-dialog::backdrop {
+  background: #26112d95;
+}
+
+/* Main Layout */
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  max-height: min(85dvh, 850px);
+  min-height: 0;
+}
+
+/* Header - Always Visible */
+
+.dialog-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  flex-shrink: 0;
+  padding: 22px 26px;
+
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.dialog-header h2 {
+  margin: 0;
+  padding: 0;
+
+  color: var(--ink);
+  font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+  line-height: 1.3;
+}
+
+/* Close Button */
+
+.dialog-close {
+  position: static;
+
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+
+  color: var(--ink);
+  background: #eadde7;
+
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.dialog-close:hover {
+  background: #e4cddd;
+  transform: rotate(90deg);
+}
+
+.dialog-close:focus-visible {
+  outline: 2px solid #ed621e;
+  outline-offset: 3px;
+}
+
+/* Scrollable Content */
+
+.dialog-body {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  padding: 24px 26px 30px;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #c6a7c5 transparent;
+}
+
+/* Scrollbar - Chrome / Edge */
+
+.dialog-body::-webkit-scrollbar {
+  width: 7px;
+}
+
+.dialog-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dialog-body::-webkit-scrollbar-thumb {
+  background: #c6a7c5;
+  border-radius: 10px;
+}
+
+.dialog-body::-webkit-scrollbar-thumb:hover {
+  background: #a77fa6;
+}
+
+/* Shared Content */
+
+.dialog-body p {
+  color: var(--muted);
+}
+
+.dialog-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.dialog-body .button {
+  width: fit-content;
+}
+
+/* ==========================================
+   MOBILE RESPONSIVENESS
+========================================== */
+
+@media (max-width: 600px) {
+  .detail-dialog {
+    width: 94vw;
+    max-width: 94vw;
+    max-height: 90dvh;
+    border-radius: 17px;
+  }
+
+  .dialog-content {
+    max-height: 90dvh;
+  }
+
+  .dialog-header {
+    padding: 16px 18px;
+    gap: 10px;
+  }
+
+  .dialog-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .dialog-close {
+    width: 34px;
+    height: 34px;
+  }
+
+  .dialog-body {
+    padding: 18px 16px 24px;
+  }
+}
+
+/* Respect Reduced Motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog-close {
+    transition: none;
+  }
+
+  .dialog-close:hover {
+    transform: none;
+  }
+}

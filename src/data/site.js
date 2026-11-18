@@ -7,7 +7,7 @@ export const navigation = [
   ['Contact', '#contact'],
 ];
 
-export const contactEmail = import.meta.env.VITE_CONTACT_EMAIL || 'hello@example.com';
+export const contactEmail = import.meta.env.VITE_CONTACT_EMAIL || 'hello@pageorigin.in';
 export const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER || '').replace(/\D/g, '');
 
 export function art(name) {

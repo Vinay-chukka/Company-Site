@@ -12,13 +12,15 @@ export default function About() {
       <div className="wrap about-grid">
         <img src={art('about')} width="872" height="843" alt="Sculptural ivory arch, orange spheres and plum leaves" loading="lazy" />
         <div>
-          <p className="eyebrow">04 / About Us</p>
+          <p className="eyebrow">About Us</p>
           <h2 className="section-title">Creative Minds.<br />Digital <em>Ideas.</em></h2>
-          <p className="about-intro">We create modern, responsive and thoughtfully designed websites that bring your vision online.</p>
+          <p className="about-intro">At PageOrigin, we believe every great digital experience begins with an idea. We are a creative web studio dedicated to transforming those ideas into modern, engaging, and functional websites that reflect each brand’s unique identity.
+Our approach combines thoughtful design, innovative thinking, and reliable development to create digital solutions tailored to your goals. From business websites and personal portfolios to memorable event experiences, we bring your vision to life with creativity and attention to detail.
+</p>
           <div className="about-client-count">
             <UsersRound aria-hidden="true" />
             <div>
-              <p className="about-client-total">XX+ Clients</p>
+              <p className="about-client-total">10+ Clients</p>
               <p className="about-client-caption">Trusted us with their ideas</p>
             </div>
           </div>

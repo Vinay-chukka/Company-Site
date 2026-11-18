@@ -49,12 +49,12 @@ export default function Header() {
         {navigation.map(([name, href]) => (
           <div key={href} className={'nav-item' + (active === href ? ' current' : '')}>
             <a href={href} aria-current={active === href ? 'location' : undefined} onClick={closeMenus}>{name}</a>
-            {name === 'Services' && <>
+            {/* {name === 'Services' && <>
               <button type="button" className="services-toggle" aria-label="Service options" aria-expanded={servicesOpen} aria-controls="services-menu" onClick={() => setServicesOpen(!servicesOpen)}><ChevronDown size={18} /></button>
               <div className="services-menu" id="services-menu" hidden={!servicesOpen}>
                 {services.map(({ name }) => <a key={name} href="#contact" onClick={() => { selectService(name); closeMenus(); }}>{name}</a>)}
               </div>
-            </>}
+            </>} */}
           </div>
         ))}
         <a className="button button--solid nav-quote" href="#contact" onClick={closeMenus}>Get a Free Quote <ArrowUpRight /></a>

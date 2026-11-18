@@ -20,7 +20,7 @@ export default function Pricing() {
   return (
     <section id="pricing" className="pricing" aria-labelledby="pricing-title">
       <div className="wrap pricing-inner">
-        <p className="eyebrow">06 / Custom Pricing</p>
+        <p className="eyebrow">Custom Pricing</p>
         <h2 className="section-title" id="pricing-title">Your Idea. Your Needs. <em>Your Quote.</em></h2>
         <p className="pricing-intro">Compare starting prices below. Your final quote depends on your project requirements.</p>
         <div className="pricing-grid">

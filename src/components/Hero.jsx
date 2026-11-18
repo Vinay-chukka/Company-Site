@@ -7,9 +7,11 @@ export default function Hero() {
   return (
     <section id="home" className="hero wrap">
       <div className="hero-copy">
-        <p className="eyebrow">01 / Creative Web Studio</p>
+        <p className="eyebrow">Creative Web Studio</p>
         <h1 className="section-title">Digital.<br /><span>Design That</span><br /><em>Stands Out.</em></h1>
-        <p className="hero-intro">We design and develop creative, responsive websites for brands, professionals and special moments.</p>
+        <p className="hero-intro">We craft modern, responsive websites and digital experiences that bring your ideas      to life, strengthen your online presence, and make a lasting impression.
+
+</p>
         <div className="hero-actions">
           <a className="button button--solid" href="#project-form">Start a Project <ArrowUpRight /></a>
           <a className="button button--outline" href="#projects">View Our Work</a>
