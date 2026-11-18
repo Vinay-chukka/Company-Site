@@ -1,5 +1,11 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
+
 import {
   ArrowUpRight,
   Mail,
@@ -10,6 +16,7 @@ import {
   Layers,
   MessagesSquare,
   ChevronDown,
+  Check,
 } from 'lucide-react';
 
 import {
@@ -27,35 +34,277 @@ import { services } from '../data/services.js';
 import SocialLinks from './SocialLinks.jsx';
 import './Contact.css';
 
+/* ==========================================
+   CONTACT INFORMATION
+========================================== */
+
 const contacts = [
   {
     title: 'WhatsApp',
-    detail: whatsappNumber ? '+' + whatsappNumber : 'Open WhatsApp',
+    detail: whatsappNumber
+      ? '+' + whatsappNumber
+      : 'Open WhatsApp',
     icon: MessageCircle,
     href: whatsappNumber
-      ? 'https://wa.me/' + whatsappNumber
-      : 'whatsapp://send',
+      ? 'https://wa.me/' + whatsappNumber.replace(/\D/g, '')
+      : null,
   },
   {
     title: 'Email',
     detail: contactEmail,
     icon: Mail,
-    href: 'mailto:' + contactEmail,
+    href: contactEmail ? 'mailto:' + contactEmail : null,
   },
   {
     title: 'Location',
     detail: 'Hyderabad, India',
     icon: MapPin,
     newTab: true,
-    href: 'https://www.google.com/maps/search/?api=1&query=Hyderabad%2C+India',
+    href:
+      'https://www.google.com/maps/search/?api=1&query=Hyderabad%2C+India',
   },
 ];
 
+/* ==========================================
+   CUSTOM PROJECT TYPE DROPDOWN
+========================================== */
+
+function ProjectTypeDropdown({
+  value,
+  onChange,
+  invalid = false,
+}) {
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const containerRef = useRef(null);
+  const triggerRef = useRef(null);
+  const optionRefs = useRef([]);
+
+  const listId = useId();
+
+  const options = [
+    ...services.map(({ name }) => name),
+    'Other',
+  ].filter((option, index, all) =>
+    all.indexOf(option) === index
+  );
+
+  const selectedIndex = options.indexOf(value);
+
+  useEffect(() => {
+    function handleOutsideClick(event) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener(
+      'pointerdown',
+      handleOutsideClick
+    );
+
+    return () => {
+      document.removeEventListener(
+        'pointerdown',
+        handleOutsideClick
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    if (open) {
+      optionRefs.current[activeIndex]?.focus();
+    }
+  }, [open, activeIndex]);
+
+  function openDropdown(index) {
+    const nextIndex = Math.max(
+      0,
+      Math.min(index, options.length - 1)
+    );
+
+    setActiveIndex(nextIndex);
+    setOpen(true);
+  }
+
+  function selectOption(option) {
+    onChange(option);
+    setOpen(false);
+    triggerRef.current?.focus();
+  }
+
+  function handleTriggerKeyDown(event) {
+    if (
+      event.key === 'ArrowDown' ||
+      event.key === 'ArrowUp'
+    ) {
+      event.preventDefault();
+
+      const index =
+        selectedIndex >= 0 ? selectedIndex : 0;
+
+      openDropdown(index);
+    }
+
+    if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  function handleOptionKeyDown(event, index) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveIndex((index + 1) % options.length);
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+
+      setActiveIndex(
+        (index - 1 + options.length) % options.length
+      );
+    }
+
+    if (event.key === 'Home') {
+      event.preventDefault();
+      setActiveIndex(0);
+    }
+
+    if (event.key === 'End') {
+      event.preventDefault();
+      setActiveIndex(options.length - 1);
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setOpen(false);
+      triggerRef.current?.focus();
+    }
+
+    if (event.key === 'Tab') {
+      setOpen(false);
+    }
+  }
+
+  return (
+    <div
+      className={
+        'project-dropdown' +
+        (open ? ' is-open' : '') +
+        (invalid ? ' is-invalid' : '')
+      }
+      ref={containerRef}
+    >
+      {/* Included in FormData for Web3Forms */}
+      <input
+        type="hidden"
+        name="project_type"
+        value={value}
+      />
+
+      <button
+        ref={triggerRef}
+        type="button"
+        className="project-dropdown-trigger"
+        aria-label="Project Type"
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-controls={open ? listId : undefined}
+        aria-invalid={invalid}
+        onClick={() => {
+          if (open) {
+            setOpen(false);
+          } else {
+            openDropdown(
+              selectedIndex >= 0 ? selectedIndex : 0
+            );
+          }
+        }}
+        onKeyDown={handleTriggerKeyDown}
+      >
+        <Layers
+          className="project-dropdown-icon"
+          aria-hidden="true"
+        />
+
+        <span
+          className={
+            'project-dropdown-value' +
+            (!value ? ' is-placeholder' : '')
+          }
+        >
+          {value || 'Project Type *'}
+        </span>
+
+        <ChevronDown
+          className="project-dropdown-arrow"
+          aria-hidden="true"
+        />
+      </button>
+
+      {open && (
+        <div
+          id={listId}
+          className="project-dropdown-menu"
+          role="listbox"
+          aria-label="Project Type Options"
+        >
+          {options.map((option, index) => (
+            <button
+              key={option}
+              ref={(element) => {
+                optionRefs.current[index] = element;
+              }}
+              type="button"
+              role="option"
+              aria-selected={value === option}
+              tabIndex={
+                activeIndex === index ? 0 : -1
+              }
+              className={
+                'project-dropdown-option' +
+                (value === option
+                  ? ' is-selected'
+                  : '')
+              }
+              onMouseEnter={() => {
+                setActiveIndex(index);
+              }}
+              onKeyDown={(event) =>
+                handleOptionKeyDown(event, index)
+              }
+              onClick={() => selectOption(option)}
+            >
+              <span>{option}</span>
+
+              {value === option && (
+                <Check
+                  size={17}
+                  aria-hidden="true"
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ==========================================
+   MAIN CONTACT COMPONENT
+========================================== */
+
 export default function Contact() {
   const [projectType, setProjectType] = useState(() => {
-    const requestedType = new URLSearchParams(
-      window.location.search
-    ).get('project');
+    const requestedType =
+      new URLSearchParams(
+        window.location.search
+      ).get('project');
 
     return services.find(
       ({ name }) => name === requestedType
@@ -65,7 +314,12 @@ export default function Contact() {
   const [pricingPlan, setPricingPlan] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [contactError, setContactError] = useState('');
+
+  const [contactError, setContactError] =
+    useState('');
+
+  const [projectError, setProjectError] =
+    useState('');
 
   const [status, setStatus] = useState({
     type: 'idle',
@@ -76,9 +330,14 @@ export default function Contact() {
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
 
+  /* ========================================
+     EXTERNAL SELECTION EVENTS
+  ======================================== */
+
   useEffect(() => {
     const handleProjectType = (event) => {
       setProjectType(event.detail);
+      setProjectError('');
     };
 
     const handlePricingPlan = (event) => {
@@ -108,15 +367,28 @@ export default function Contact() {
     };
   }, []);
 
-  const handleEmailChange = (event) => {
+  /* ========================================
+     FORM FIELD HANDLERS
+  ======================================== */
+
+  function handleEmailChange(event) {
     setEmail(event.target.value);
     setContactError('');
-  };
+  }
 
-  const handlePhoneChange = (event) => {
+  function handlePhoneChange(event) {
     setPhone(event.target.value);
     setContactError('');
-  };
+  }
+
+  function handleProjectChange(value) {
+    setProjectType(value);
+    setProjectError('');
+  }
+
+  /* ========================================
+     FORM SUBMISSION
+  ======================================== */
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -124,39 +396,53 @@ export default function Contact() {
     if (pending.current) return;
 
     const form = event.currentTarget;
+
     const emailValue = email.trim();
     const phoneValue = phone.trim();
 
-    // Email or Phone: minimum one is required
-    if (!emailValue && !phoneValue) {
-      const message =
-        'Please provide either an email address or a phone number.';
+    setContactError('');
+    setProjectError('');
+    setStatus({ type: 'idle', message: '' });
 
-      setContactError(message);
-      setStatus({ type: 'idle', message: '' });
+    /* Email or Phone required */
+
+    if (!emailValue && !phoneValue) {
+      setContactError(
+        'Please provide either an email address or a phone number.'
+      );
 
       emailRef.current?.focus();
       return;
     }
 
-    // Validate phone only when provided
+    /* Phone validation */
+
     if (phoneValue) {
       const digits = phoneValue.replace(/\D/g, '');
 
-      if (digits.length < 10 || digits.length > 15) {
+      if (
+        digits.length < 10 ||
+        digits.length > 15
+      ) {
         setContactError(
           'Please enter a valid phone number (10–15 digits).'
         );
-
-        setStatus({ type: 'idle', message: '' });
 
         phoneRef.current?.focus();
         return;
       }
     }
 
-    // Email format is validated by native HTML input type="email"
-    setContactError('');
+    /* Project Type required */
+
+    if (!projectType) {
+      setProjectError(
+        'Please select a project type.'
+      );
+      return;
+    }
+
+    /* Start submission */
 
     pending.current = true;
 
@@ -168,17 +454,22 @@ export default function Contact() {
     try {
       const formData = new FormData(form);
 
-      // Remove blank optional contact fields
-      if (!emailValue) {
-        formData.delete('email');
-      } else {
+      if (emailValue) {
         formData.set('email', emailValue);
+      } else {
+        formData.delete('email');
       }
 
-      if (!phoneValue) {
-        formData.delete('phone');
-      } else {
+      if (phoneValue) {
         formData.set('phone', phoneValue);
+      } else {
+        formData.delete('phone');
+      }
+
+      formData.set('project_type', projectType);
+
+      if (pricingPlan) {
+        formData.set('pricing_plan', pricingPlan);
       }
 
       const { sent } = await submitContact(formData);
@@ -191,6 +482,7 @@ export default function Contact() {
         setEmail('');
         setPhone('');
         setContactError('');
+        setProjectError('');
 
         setStatus({
           type: 'success',
@@ -201,7 +493,7 @@ export default function Contact() {
         setStatus({
           type: 'demo',
           message:
-            'Our contact form is currently under development. In the meantime, please reach out to us at hello@pageorigin.in. We would be happy to assist you!',
+            'Our contact form is currently unavailable. Please reach out to us at hello@pageorigin.in.',
         });
       }
     } catch (error) {
@@ -224,26 +516,38 @@ export default function Contact() {
 
   const phoneInvalid =
     Boolean(contactError) &&
-    contactError.includes('phone number') &&
+    contactError.includes('valid phone number') &&
     Boolean(phone.trim());
 
+  /* ========================================
+     JSX
+  ======================================== */
+
   return (
-    <section id="contact" className="contact">
+    <section
+      id="contact"
+      className="contact"
+    >
       <div className="wrap contact-inner">
 
         {/* SECTION HEADING */}
+
         <div className="contact-heading">
           <div>
-            <p className="eyebrow">Contact Us</p>
+            <p className="eyebrow">
+              Contact Us
+            </p>
 
             <h2 className="section-title">
               Let’s <em>Talk!</em>
             </h2>
 
             <p>
-              Have a project in mind? We'd love to hear about it.
+              Have a project in mind? We'd love to
+              hear about it.
               <br className="desktop-break" />
-              {' '}Reach out to us for a quote, collaboration or any questions.
+              {' '}Reach out to us for a quote,
+              collaboration or any questions.
             </p>
           </div>
 
@@ -259,10 +563,15 @@ export default function Contact() {
         <div className="contact-grid">
 
           {/* CONTACT INFORMATION */}
-          <aside className="contact-info">
-            <p className="eyebrow">Get in Touch</p>
 
-            <h3>Contact Information</h3>
+          <aside className="contact-info">
+            <p className="eyebrow">
+              Get in Touch
+            </p>
+
+            <h3>
+              Contact Information
+            </h3>
 
             <p>
               Choose the easiest way to reach us.
@@ -278,27 +587,51 @@ export default function Contact() {
                 href,
                 newTab,
               }) => (
-                <a
-                  key={title}
-                  className="contact-method"
-                  href={href}
-                  target={newTab ? '_blank' : undefined}
-                  rel={newTab ? 'noopener noreferrer' : undefined}
-                >
-                  <span className="contact-icon">
-                    <Icon aria-hidden="true" />
-                  </span>
+                href ? (
+                  <a
+                    key={title}
+                    className="contact-method"
+                    href={href}
+                    target={
+                      newTab
+                        ? '_blank'
+                        : undefined
+                    }
+                    rel={
+                      newTab
+                        ? 'noopener noreferrer'
+                        : undefined
+                    }
+                  >
+                    <span className="contact-icon">
+                      <Icon aria-hidden="true" />
+                    </span>
 
-                  <span className="contact-method-label">
-                    <strong>{title}</strong>
-                    {detail}
-                  </span>
+                    <span className="contact-method-label">
+                      <strong>{title}</strong>
+                      {detail}
+                    </span>
 
-                  <ArrowUpRight
-                    size={20}
-                    aria-hidden="true"
-                  />
-                </a>
+                    <ArrowUpRight
+                      size={20}
+                      aria-hidden="true"
+                    />
+                  </a>
+                ) : (
+                  <div
+                    key={title}
+                    className="contact-method"
+                  >
+                    <span className="contact-icon">
+                      <Icon aria-hidden="true" />
+                    </span>
+
+                    <span className="contact-method-label">
+                      <strong>{title}</strong>
+                      {detail}
+                    </span>
+                  </div>
+                )
               ))}
             </div>
 
@@ -309,28 +642,36 @@ export default function Contact() {
           </aside>
 
           {/* CONTACT FORM */}
+
           <div
             className="contact-form-panel"
             id="project-form"
             tabIndex={-1}
           >
-            <p className="eyebrow">Send a Message</p>
+            <p className="eyebrow">
+              Send a Message
+            </p>
 
-            <h3>Start a Conversation</h3>
+            <h3>
+              Start a Conversation
+            </h3>
 
             <p>
-              Tell us a bit about your project and
-              we’ll get back to you soon.
+              Tell us a bit about your project
+              and we’ll get back to you soon.
             </p>
 
             <form
               onSubmit={handleSubmit}
-              aria-busy={status.type === 'sending'}
+              aria-busy={
+                status.type === 'sending'
+              }
             >
 
               {/* SELECTED PRICING PLAN */}
+
               {pricingPlan && (
-                <p className="contact-plan">
+                <div className="contact-plan">
                   <input
                     type="hidden"
                     name="pricing_plan"
@@ -338,24 +679,30 @@ export default function Contact() {
                   />
 
                   <span>
-                    Quote for <strong>{pricingPlan}</strong>
+                    Quote for{' '}
+                    <strong>{pricingPlan}</strong>
                   </span>
 
                   <button
                     type="button"
                     className="text-link"
-                    onClick={() => setPricingPlan('')}
+                    onClick={() =>
+                      setPricingPlan('')
+                    }
                   >
                     Remove
                   </button>
-                </p>
+                </div>
               )}
 
               <div className="contact-fields">
 
                 {/* NAME */}
+
                 <label className="contact-field">
-                  <UserRound aria-hidden="true" />
+                  <UserRound
+                    aria-hidden="true"
+                  />
 
                   <span className="sr-only">
                     Name
@@ -366,13 +713,16 @@ export default function Contact() {
                     autoComplete="name"
                     placeholder="Name *"
                     required
-                    maxLength="120"
+                    maxLength={120}
                   />
                 </label>
 
                 {/* EMAIL */}
+
                 <label className="contact-field">
-                  <Mail aria-hidden="true" />
+                  <Mail
+                    aria-hidden="true"
+                  />
 
                   <span className="sr-only">
                     Email address
@@ -386,15 +736,18 @@ export default function Contact() {
                     placeholder="Email"
                     value={email}
                     onChange={handleEmailChange}
-                    maxLength="254"
+                    maxLength={254}
                     aria-invalid={bothContactsEmpty}
                     aria-describedby="contact-method-note"
                   />
                 </label>
 
                 {/* PHONE */}
+
                 <label className="contact-field">
-                  <Phone aria-hidden="true" />
+                  <Phone
+                    aria-hidden="true"
+                  />
 
                   <span className="sr-only">
                     Phone number
@@ -409,49 +762,29 @@ export default function Contact() {
                     placeholder="Phone"
                     value={phone}
                     onChange={handlePhoneChange}
-                    maxLength="35"
-                    aria-invalid={bothContactsEmpty || phoneInvalid}
+                    maxLength={35}
+                    aria-invalid={
+                      bothContactsEmpty ||
+                      phoneInvalid
+                    }
                     aria-describedby="contact-method-note"
                   />
                 </label>
 
-                {/* PROJECT TYPE */}
-                <label className="contact-field contact-select">
-                  <Layers aria-hidden="true" />
+                {/* CUSTOM PROJECT TYPE */}
 
-                  <span className="sr-only">
-                    Project Type
-                  </span>
-
-                  <select
-                    name="project_type"
-                    required
-                    value={projectType}
-                    onChange={(event) =>
-                      setProjectType(event.target.value)
-                    }
-                  >
-                    <option value="" disabled>
-                      Project Type *
-                    </option>
-
-                    {services.map(({ name }) => (
-                      <option key={name} value={name}>
-                        {name}
-                      </option>
-                    ))}
-
-                    <option value="Other">
-                      Other
-                    </option>
-                  </select>
-
-                  <ChevronDown aria-hidden="true" />
-                </label>
+                <ProjectTypeDropdown
+                  value={projectType}
+                  onChange={handleProjectChange}
+                  invalid={Boolean(projectError)}
+                />
 
                 {/* PROJECT DETAILS */}
+
                 <label className="contact-field details-field">
-                  <MessagesSquare aria-hidden="true" />
+                  <MessagesSquare
+                    aria-hidden="true"
+                  />
 
                   <span>
                     Project Details <b>*</b>
@@ -459,24 +792,26 @@ export default function Contact() {
 
                   <textarea
                     name="message"
-                    rows="3"
+                    rows={3}
                     required
-                    maxLength="4000"
+                    maxLength={4000}
                     placeholder="Share your idea, requirements or any specific details…"
                   />
                 </label>
               </div>
 
-              {/* CONTACT METHOD INFORMATION
+              {/* CONTACT REQUIREMENT */}
+
               <p
                 className="contact-requirement"
                 id="contact-method-note"
               >
-                * Please provide at least one contact method:
-                Email or Phone.
-              </p> */}
+                Please provide at least one
+                contact method: Email or Phone.
+              </p>
 
-              {/* VALIDATION ERROR */}
+              {/* VALIDATION ERRORS */}
+
               {contactError && (
                 <p
                   className="contact-validation-error"
@@ -486,7 +821,17 @@ export default function Contact() {
                 </p>
               )}
 
+              {projectError && (
+                <p
+                  className="contact-validation-error"
+                  role="alert"
+                >
+                  {projectError}
+                </p>
+              )}
+
               {/* SPAM PROTECTION */}
+
               <input
                 type="checkbox"
                 name="botcheck"
@@ -496,26 +841,35 @@ export default function Contact() {
               />
 
               {/* SUBMIT BUTTON */}
+
               <button
                 className="button button--solid"
                 type="submit"
-                disabled={status.type === 'sending'}
+                disabled={
+                  status.type === 'sending'
+                }
               >
                 {status.type === 'sending'
                   ? 'Sending…'
                   : 'Send Message'}
 
-                <ArrowUpRight aria-hidden="true" />
+                <ArrowUpRight
+                  aria-hidden="true"
+                />
               </button>
 
               {/* FORM STATUS */}
+
               <p
-                className={'form-status ' + status.type}
+                className={
+                  'form-status ' + status.type
+                }
                 role="status"
                 aria-live="polite"
               >
                 {status.message}
               </p>
+
             </form>
           </div>
         </div>
