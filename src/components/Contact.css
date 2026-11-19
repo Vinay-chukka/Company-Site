@@ -6,6 +6,9 @@
 .contact {
   position: relative;
   isolation: isolate;
+  /* Natural content height prevents a large blank area before the footer. */
+  height: auto;
+  min-height: 0;
   padding:
     clamp(2rem, calc(3.25 * var(--layout-unit)), 3.6rem)
     0
@@ -633,8 +636,7 @@ a.contact-method:hover strong {
   background: #fff7f7;
 }
 
-.contact-field:has(input[aria-invalid="true"])
-:focus-within {
+.contact-field:has(input[aria-invalid="true"]):focus-within {
   border-color: #d43c3c;
   box-shadow: 0 0 0 1px #d43c3c;
 }
@@ -760,12 +762,6 @@ a.contact-method:hover strong {
     width: min(87%, 1120px);
   }
 
-  .contact {
-    min-height: max(
-      0px,
-      calc(100svh - var(--nav-offset) - 145px)
-    );
-  }
 }
 
 /* ==========================================
@@ -778,4 +774,117 @@ a.contact-method:hover strong {
   .project-dropdown-option {
     transition: none;
   }
+}
+
+
+/* ==========================================
+   SUCCESSFUL FORM SUBMISSION POPUP
+========================================== */
+.contact-success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgb(30 13 36 / 66%);
+  backdrop-filter: blur(4px);
+}
+
+.contact-success-dialog {
+  position: relative;
+  width: min(100%, 440px);
+  max-height: min(90dvh, 600px);
+  overflow-y: auto;
+  padding: clamp(26px, 5vw, 42px) clamp(20px, 4vw, 36px);
+  border: 1px solid #f2e4ea;
+  border-radius: 24px;
+  background: #fffaf8;
+  box-shadow: 0 24px 75px rgb(24 10 29 / 32%);
+  text-align: center;
+  color: #321832;
+}
+
+.contact-success-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: #f2e6ec;
+  color: #321832;
+  cursor: pointer;
+}
+
+.contact-success-icon {
+  display: grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #fff0e7;
+  color: #e86524;
+}
+
+.contact-success-dialog h2 {
+  margin: 0 0 12px;
+  font-size: clamp(1.45rem, 3vw, 1.85rem);
+  line-height: 1.25;
+  letter-spacing: -.03em;
+}
+
+.contact-success-dialog p {
+  margin: 0;
+  color: #65556b;
+  line-height: 1.65;
+  font-size: 1rem;
+}
+
+.contact-success-done {
+  margin-top: 26px;
+  min-width: 148px;
+  min-height: 44px;
+  padding: 10px 25px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(115deg, #e86524, #d95114);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.contact-success-close:focus-visible,
+.contact-success-done:focus-visible {
+  outline: 3px solid #ed742e;
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .contact-success-dialog { border-radius: 19px; }
+  .contact-success-icon { width: 68px; height: 68px; }
+  .contact-success-dialog p { font-size: .94rem; }
+}
+
+/* Submission failure uses the same popup layout, with a distinct icon. */
+.contact-success-dialog--error .contact-success-icon {
+  color: #ae3e2a;
+  background: #fff0ed;
+}
+.contact-result-email {
+  display: inline-block;
+  margin-top: 12px;
+  color: #c34f22;
+  font-weight: 700;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+.contact-result-email:focus-visible {
+  outline: 2px solid #e86524;
+  outline-offset: 3px;
 }

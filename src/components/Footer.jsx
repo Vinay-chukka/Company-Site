@@ -156,13 +156,13 @@ export default function Footer() {
         <nav aria-label="Footer services">
           <h2>Our Services</h2>
           {services.map(({ name }) => (
-            <a
+            <p
               key={name}
-              href="#contact"
+              // href="#contact"
               onClick={() => selectService(name)}
             >
               {name}
-            </a>
+            </p>
           ))}
         </nav>
 
@@ -175,7 +175,7 @@ export default function Footer() {
   className="button button--solid"
   href="mailto:support@pageorigin.in"
 >
-  Support Us
+  Contact Us
   <ArrowUpRight />
 </a>
         </div>

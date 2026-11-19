@@ -9,11 +9,11 @@ const platforms = [
     Icon: Instagram,
     url: import.meta.env.VITE_INSTAGRAM_URL,
   },
-  {
-    name: 'LinkedIn',
-    Icon: Linkedin,
-    url: import.meta.env.VITE_LINKEDIN_URL,
-  },
+  // {
+  //   name: 'LinkedIn',
+  //   Icon: Linkedin,
+  //   url: import.meta.env.VITE_LINKEDIN_URL,
+  // },
 ];
 
 export default function SocialLinks() {

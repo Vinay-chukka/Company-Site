@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 
 import {
   ArrowUpRight,
@@ -17,6 +18,9 @@ import {
   MessagesSquare,
   ChevronDown,
   Check,
+  CircleCheck,
+  AlertCircle,
+  X,
 } from 'lucide-react';
 
 import {
@@ -326,9 +330,24 @@ export default function Contact() {
     message: '',
   });
 
+  const [submissionPopup, setSubmissionPopup] = useState(null);
+  const popupCloseRef = useRef(null);
+
   const pending = useRef(false);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
+
+  // Keep the result dialog accessible and close it with Escape.
+  useEffect(() => {
+    if (!submissionPopup) return;
+
+    popupCloseRef.current?.focus();
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') setSubmissionPopup(null);
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [submissionPopup]);
 
   /* ========================================
      EXTERNAL SELECTION EVENTS
@@ -484,25 +503,24 @@ export default function Contact() {
         setContactError('');
         setProjectError('');
 
-        setStatus({
-          type: 'success',
-          message:
-            'Message sent successfully! We’ll get back to you soon.',
-        });
+        // Success popup only after a confirmed API response.
+        setStatus({ type: 'idle', message: '' });
+        setSubmissionPopup({ type: 'success' });
       } else {
-        setStatus({
-          type: 'demo',
-          message:
-            'Our contact form is currently unavailable. Please reach out to us at hello@pageorigin.in.',
+        // Missing API key/configuration: show failure, never success.
+        setStatus({ type: 'idle', message: '' });
+        setSubmissionPopup({
+          type: 'error',
+          message: 'The contact form is temporarily unavailable. Please try again or email us directly.',
         });
       }
     } catch (error) {
-      setStatus({
+      setStatus({ type: 'idle', message: '' });
+      setSubmissionPopup({
         type: 'error',
-        message:
-          error instanceof ContactSubmissionError
-            ? error.message
-            : 'Your message could not be sent. Please try again.',
+        message: error instanceof ContactSubmissionError
+          ? error.message
+          : 'We could not send your message. Please try again or email us directly.',
       });
     } finally {
       pending.current = false;
@@ -874,6 +892,64 @@ export default function Contact() {
           </div>
         </div>
       </div>
+
+      {submissionPopup && createPortal(
+        <div
+          className="contact-success-overlay"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setSubmissionPopup(null);
+            }
+          }}
+        >
+          <div
+            className={`contact-success-dialog ${submissionPopup.type === 'error' ? 'contact-success-dialog--error' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="contact-result-title"
+            aria-describedby="contact-result-message"
+          >
+            <button
+              type="button"
+              className="contact-success-close"
+              ref={popupCloseRef}
+              aria-label="Close message"
+              onClick={() => setSubmissionPopup(null)}
+            >
+              <X size={20} aria-hidden="true" />
+            </button>
+
+            <div className="contact-success-icon">
+              {submissionPopup.type === 'success'
+                ? <CircleCheck size={40} strokeWidth={1.8} aria-hidden="true" />
+                : <AlertCircle size={40} strokeWidth={1.8} aria-hidden="true" />}
+            </div>
+            <h2 id="contact-result-title">
+              {submissionPopup.type === 'success'
+                ? 'Message Sent Successfully!'
+                : 'Message Not Sent'}
+            </h2>
+            <p id="contact-result-message">
+              {submissionPopup.type === 'success'
+                ? 'Your enquiry has been submitted successfully. Our team will connect with you soon.'
+                : submissionPopup.message}
+            </p>
+            {submissionPopup.type === 'error' && (
+              <a className="contact-result-email" href="mailto:hello@pageorigin.in">
+                hello@pageorigin.in
+              </a>
+            )}
+            <button
+              type="button"
+              className="contact-success-done"
+              onClick={() => setSubmissionPopup(null)}
+            >
+              {submissionPopup.type === 'success' ? 'Done' : 'Close & Try Again'}
+            </button>
+          </div>
+        </div>,
+        document.body
+      )}
     </section>
   );
 }
