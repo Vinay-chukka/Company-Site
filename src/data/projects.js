@@ -7,7 +7,7 @@ export const projects = [
     service: 'Digital Invitations',
     description: 'A floral save-the-date design for Sainath Reddy & Manisha, with the wedding details gathered in one invitation.',
     alt: 'Aditi and Karthik’s pink floral wedding invitation displayed on a laptop',
-    projectLink:'https://sveworks.vercel.app/',
+    projectLink:'https://sainathreddy-manisha.vercel.app/',
     features: [
       ['Save the date', 'An elegant floral invitation featuring Sainath Reddy & Manisha, celebrating their special day on 20 November 2026.'],
       ['Our story and events', 'Beautifully designed sections to share the couple’s journey and highlight their wedding celebrations.'],
