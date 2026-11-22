@@ -14,8 +14,8 @@ export default function About() {
         <div>
           <p className="eyebrow">About Us</p>
           <h2 className="section-title">Creative Minds.<br />Digital <em>Ideas.</em></h2>
-          <p className="about-intro">At PageOrigin, we believe every great digital experience begins with an idea. We are a creative web studio dedicated to transforming those ideas into modern, engaging, and functional websites that reflect each brand’s unique identity.
-Our approach combines thoughtful design, innovative thinking, and reliable development to create digital solutions tailored to your goals. From business websites and personal portfolios to memorable event experiences, we bring your vision to life with creativity and attention to detail.
+          <p className="about-intro">At PageOrigin, we turn creative ideas into modern, engaging, and functional websites that reflect your brand’s identity.
+</p><p className="about-intro">With a blend of creativity, thoughtful design, and reliable development, we build digital experiences tailored to your vision and goals.
 </p>
           <div className="about-client-count">
             <UsersRound aria-hidden="true" />

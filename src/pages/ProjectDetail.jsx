@@ -12,7 +12,7 @@ export default function ProjectDetail({ project }) {
       <div className="detail-layout">
         <figure className="detail-preview">
           <img src={'../../art/' + project.image + '.webp'} width="664" height="275" alt={project.alt} />
-          <figcaption>{project.name} design preview</figcaption>
+          {/* <figcaption>{project.name} design preview</figcaption> */}
         </figure>
         <section className="detail-features" aria-labelledby="project-details">
           <h2 id="project-details">Project Details</h2>
@@ -21,7 +21,17 @@ export default function ProjectDetail({ project }) {
               <div key={name}><dt>{name}</dt><dd>{description}</dd></div>
             ))}
           </dl>
-          <a className="button button--solid" href={'../../?project=' + encodeURIComponent(project.service) + '#contact'}>Ask About This Style <ArrowUpRight aria-hidden="true" /></a>
+          {project.projectLink && (
+            <a
+              className="button button--solid"
+              href={project.projectLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit Website
+              <ArrowUpRight aria-hidden="true" />
+            </a>
+          )}
         </section>
       </div>
     </main>
