@@ -14,7 +14,7 @@ export default function About() {
         <div>
           <p className="eyebrow">About Us</p>
           <h2 className="section-title">Creative Minds.<br />Digital <em>Ideas.</em></h2>
-          <p className="about-intro">At PageOrigin, we turn creative ideas into modern, engaging, and functional websites that reflect your brand’s identity.
+          <p className="about-intro">PageOrigin is a web design and development studio based in Hyderabad, India. We build business websites, portfolios, landing pages and digital wedding invitations.
 </p><p className="about-intro">With a blend of creativity, thoughtful design, and reliable development, we build digital experiences tailored to your vision and goals.
 </p>
           <div className="about-client-count">
@@ -27,8 +27,8 @@ export default function About() {
           <button type="button" className="text-link about-link" onClick={() => setExpanded(true)}>More About Us <ArrowUpRight /></button>
         </div>
       </div>
-      {expanded && <DetailDialog title="About PageOrgin" onClose={() => setExpanded(false)}>
-        <p>PageOrgin is a creative web studio for businesses, professionals and special occasions. We design around your content and build layouts that work across phones, tablets and desktops.</p>
+      {expanded && <DetailDialog title="About PageOrigin" onClose={() => setExpanded(false)}>
+        <p>PageOrigin is a creative web studio for businesses, professionals and special occasions. We design around your content and build layouts that work across phones, tablets and desktops.</p>
         <a className="button button--solid" href="#contact" onClick={(event) => event.currentTarget.closest('dialog').close()}>Get in Touch <ArrowUpRight /></a>
       </DetailDialog>}
     </section>
